@@ -16,3 +16,21 @@ def test_whoami_without_token():
         f"Очікувався статус 401, "
         f"але отримано {response.status_code}"
     )
+
+    
+# Перевірка отримання токена з HTTP-заголовка
+def test_whoami_authorization_header():
+
+    # Передаємо токен через заголовок Authorization
+    response = client.get(
+        "/whoami",
+        headers={
+            "Authorization": "Bearer fake-token-for-alice@example.com"
+        }
+    )
+
+    # Перевіряємо, чи сервер прийняв заголовок
+    assert response.status_code == 200, (
+        f"Очікувався статус 200, "
+        f"але отримано {response.status_code}"
+    )
