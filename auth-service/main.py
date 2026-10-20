@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, Header
 from fastapi.responses import JSONResponse
 
 # Створюємо застосунок авторизації
@@ -35,7 +35,10 @@ async def login(email: str, password: str, response: Response):
 
 # Отримання інформації про користувача
 @app.get("/whoami")
-async def whoami(authorization: str | None = None):
+async def whoami(
+    authorization: str | None = Header(default=None)
+):
+
 
     # Перевіряємо наявність токена
     if not authorization or not authorization.startswith("Bearer"):
