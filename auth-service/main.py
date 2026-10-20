@@ -41,7 +41,7 @@ async def whoami(authorization: str | None = None):
     if not authorization or not authorization.startswith("Bearer"):
         return JSONResponse(
             {"error": "missing or invalid token"},
-            status_code=200
+            status_code=401
         )
 
     # Отримуємо дані з навчального токена
