@@ -35,8 +35,8 @@ async def get_product(pid: int):
         if product["product_id"] == pid:
             return product
 
-    # Початкова поведінка з навмисною помилкою
+    # Повертаємо 404, якщо товар не знайдено
     return JSONResponse(
         {"message": "not found"},
-        status_code=200
+        status_code=404
     )
