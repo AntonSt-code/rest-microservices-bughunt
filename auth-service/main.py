@@ -48,7 +48,7 @@ async def whoami(
         )
 
     # Отримуємо дані з навчального токена
-    token = authorization.removeprefix("Bearer")
+    token = authorization.removeprefix("Bearer ")
     email = token.replace("fake-token-for-", "")
 
     return {"email": email}
