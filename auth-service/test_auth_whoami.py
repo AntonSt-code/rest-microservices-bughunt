@@ -17,7 +17,7 @@ def test_whoami_without_token():
         f"але отримано {response.status_code}"
     )
 
-    
+
 # Перевірка отримання токена з HTTP-заголовка
 def test_whoami_authorization_header():
 
@@ -33,4 +33,28 @@ def test_whoami_authorization_header():
     assert response.status_code == 200, (
         f"Очікувався статус 200, "
         f"але отримано {response.status_code}"
+    )
+
+
+# Перевірка правильності адреси після обробки Bearer
+def test_whoami_email_without_extra_spaces():
+
+    # Передаємо навчальний токен через HTTP-заголовок
+    response = client.get(
+        "/whoami",
+        headers={
+            "Authorization": "Bearer fake-token-for-alice@example.com"
+        }
+    )
+
+    # Перевіряємо успішність запиту
+    assert response.status_code == 200
+
+    # Отримуємо електронну адресу з JSON-відповіді
+    email = response.json()["email"]
+
+    # Перевіряємо відсутність зайвих пробілів
+    assert email == "alice@example.com", (
+        f"Очікувалася адреса 'alice@example.com', "
+        f"але отримано '{email}'"
     )
