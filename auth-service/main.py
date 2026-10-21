@@ -21,7 +21,7 @@ async def login(email: str, password: str, response: Response):
     if not user or user["password"] != password:
         return JSONResponse(
             {"message": "invalid credentials"},
-            status_code=200
+            status_code=401
         )
 
     # Спрощений навчальний токен
