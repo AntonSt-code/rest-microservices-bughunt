@@ -25,11 +25,26 @@ async def create_order(
     # Очікувані дані:
     # {"productId": int, "qty": int}
 
-    # Намагаємося перевірити токен користувача
+
+    # Перевіряємо авторизацію через Auth Service
     async with httpx.AsyncClient() as client:
-        _ = await client.get(
+        auth_response = await client.get(
             f"{AUTH_URL}/whoami",
             headers={"Authorization": authorization or ""}
+        )
+
+    # Забороняємо створення замовлення без авторизації
+    if auth_response.status_code == 401:
+        return JSONResponse(
+            {"message": "unauthorized"},
+            status_code=401
+        )
+
+    # Інші помилки Auth Service теж не дозволяють створити замовлення
+    if auth_response.status_code != 200:
+        return JSONResponse(
+            {"message": "authentication service error"},
+            status_code=502
         )
 
     # Створюємо замовлення
